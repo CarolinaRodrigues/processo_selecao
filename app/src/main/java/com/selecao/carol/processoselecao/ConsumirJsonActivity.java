@@ -41,14 +41,14 @@ public class ConsumirJsonActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 
-		Pessoa pessoa = (Pessoa) l.getAdapter().getItem(position);
+		Televisor televisor = (Televisor) l.getAdapter().getItem(position);
 
 		Intent intent = new Intent(this, InformacoesActivity.class);
-		intent.putExtra("pessoa", pessoa);
+		intent.putExtra("televisor", televisor);
 		startActivity(intent);
 	}
 
-	class DownloadJsonAsyncTask extends AsyncTask<String, Void, List<Pessoa>> {
+	class DownloadJsonAsyncTask extends AsyncTask<String, Void, List<Televisor>> {
 		ProgressDialog dialog;
 
 		//Exibe pop-up indicando que est� sendo feito o download do JSON
@@ -59,9 +59,9 @@ public class ConsumirJsonActivity extends ListActivity {
 					"Fazendo download do JSON");
 		}
 
-		//Acessa o servi�o do JSON e retorna a lista de pessoas
+		//Acessa o servi�o do JSON e retorna a lista de Televisors
 		@Override
-		protected List<Pessoa> doInBackground(String... params) {
+		protected List<Televisor> doInBackground(String... params) {
 			String urlString = params[0];
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpGet httpget = new HttpGet(urlString);
@@ -72,8 +72,8 @@ public class ConsumirJsonActivity extends ListActivity {
 					InputStream instream = entity.getContent();
 					String json = getStringFromInputStream(instream);
 					instream.close();
-					List<Pessoa> pessoas = getPessoas(json);
-					return pessoas;
+					List<Televisor> Televisors = getTelevisors(json);
+					return Televisors;
 				}
 			} catch (Exception e) {
 				Log.e("Erro", "Falha ao acessar Web service", e);
@@ -84,11 +84,11 @@ public class ConsumirJsonActivity extends ListActivity {
 
 		//Depois de executada a chamada do servi�o 
 		@Override
-		protected void onPostExecute(List<Pessoa> result) {
+		protected void onPostExecute(List<Televisor> result) {
 			super.onPostExecute(result);
 			dialog.dismiss();
 			if (result.size() > 0) {
-				ArrayAdapter<Pessoa> adapter = new ArrayAdapter<Pessoa>(
+				ArrayAdapter<Televisor> adapter = new ArrayAdapter<Televisor>(
 						ConsumirJsonActivity.this,
 						android.R.layout.simple_list_item_1, result);
 				setListAdapter(adapter);
@@ -102,28 +102,28 @@ public class ConsumirJsonActivity extends ListActivity {
 			}
 		}
 		
-		//Retorna uma lista de pessoas com as informa��es retornadas do JSON
-		private List<Pessoa> getPessoas(String jsonString) {
-			List<Pessoa> pessoas = new ArrayList<Pessoa>();
+		//Retorna uma lista de Televisors com as informa��es retornadas do JSON
+		private List<Televisor> getTelevisors(String jsonString) {
+			List<Televisor> Televisors = new ArrayList<Televisor>();
 			try {
-				JSONArray pessoasJson = new JSONArray(jsonString);
-				JSONObject pessoa;
+				JSONArray TelevisorsJson = new JSONArray(jsonString);
+				JSONObject Televisor;
 
-				for (int i = 0; i < pessoasJson.length(); i++) {
-					pessoa = new JSONObject(pessoasJson.getString(i));
-					Log.i("PESSOA ENCONTRADA: ",
-							"nome=" + pessoa.getString("nome"));
+				for (int i = 0; i < TelevisorsJson.length(); i++) {
+					Televisor = new JSONObject(TelevisorsJson.getString(i));
+					Log.i("Televisor ENCONTRADA: ",
+							"nome=" + Televisor.getString("nome"));
 
-					Pessoa objetoPessoa = new Pessoa();
-					objetoPessoa.setNome(pessoa.getString("nome"));
-					objetoPessoa.setCpf(pessoa.getString("CPF"));
-					pessoas.add(objetoPessoa);
+					Televisor objetoTelevisor = new Televisor();
+					objetoTelevisor.setDescricao(Televisor.getString("Descricao"));
+					objetoTelevisor.setValorTV(Televisor.getString("Valor da TV"));
+					televisor.add(objetoTelevisor);
 				}
 
 			} catch (JSONException e) {
 				Log.e("Erro", "Erro no parsing do JSON", e);
 			}
-			return pessoas;
+			return Televisors;
 		}
 		
 
