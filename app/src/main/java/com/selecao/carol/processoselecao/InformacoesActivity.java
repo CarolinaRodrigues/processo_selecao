@@ -3,7 +3,6 @@ package com.selecao.carol.processoselecao;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
-import com.selecao.carol.processoselecao.Televisor
 
 
 public class InformacoesActivity extends Activity {
@@ -16,7 +15,7 @@ public class InformacoesActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_informacoes);
+		setContentView(R.layout.activity_main);
 
 		televisor = (Televisor) getIntent().getSerializableExtra("televisor" + "");
 		
@@ -25,7 +24,7 @@ public class InformacoesActivity extends Activity {
 		txtUrlImagem = (TextView) findViewById(R.id.txtUrlImagem);
 		
 		txtDescricao.setText(televisor.getDescricao());
-		txtValorTV.setText(televisor.getValorTV());
+		txtValorTV.setText((int) televisor.getValorTV());
 		txtUrlImagem.setText(televisor.getUrlImagem());
 
 	}
